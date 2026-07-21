@@ -1,22 +1,39 @@
-# WwiseMovieRenderOutput
-This is an Unreal Engine 5.x plugin for rendering Wwise events in level sequences into a single .wav stem from MRQ.
+<p align="center">
+  <img src="./assets/readme/hero.svg" width="100%" alt="WwiseMovieRenderOutput: an Unreal Engine 5 editor plugin that captures Wwise audio during a Movie Render Queue render and writes it out as a single, frame-synced .wav stem">
+</p>
 
-By default, Wwise audio is not rendered when using MRQ to render level sequences. This simple plugin allows you to create an audio stem (.wav file) of all the Wwise events in the sequence.
+Wwise audio isn't rendered when Movie Render Queue renders a level sequence. This plugin adds an MRQ output node that captures every Wwise event playing during the render and writes it out as one finished `.wav` stem, sample-accurate with the picture.
 
-# Prerequisites
+## Requirements
+
 * Unreal Engine 5
-* Movie Render Queue plugin enabled (needed for using MRQ)
+* The Wwise integration plugin, installed and initialized in your project
+* Movie Render Queue enabled
 
-# Installation
-1. Clone this repository (or download the zip file). 
-1. Move the contents to your Unreal projects under `Plugins/WwiseMovieRenderOutput`
+## Installation
 
-# Usage
-1. Starup MRQ and edit the config
-![MRQ Config](Docs/wwisemrq-edit-mrq-config.png)
-1. Add the Wwise Movie Render output node
-![Add Wwise Movie Render node](Docs/wwisemrq-select-output-node.png)
-1. Configure the Wwise Movie Render node to override the output filename if desired. By default it will use the naming convention for the first video frame.
+1. Clone this repository (or download the zip).
+2. Copy the contents into your project's `Plugins/WwiseMovieRenderOutput` folder.
+3. Enable **WwiseMovieRenderOutput** in the Plugins browser and restart the editor if prompted.
 
-![Configure output node](Docs/wwisemrq-configure-output.png)
+## Usage
 
+**1. Open MRQ and edit the render config.**
+
+![Editing the Movie Render Queue config](Docs/wwisemrq-edit-mrq-config.png)
+
+**2. Add the "Wwise .wav Output" setting.**
+
+![Adding the Wwise Movie Render output node](Docs/wwisemrq-select-output-node.png)
+
+**3. Optionally override the output filename.** By default the stem is named after the first rendered video frame, dropped in the same output directory as the rest of the render.
+
+![Configuring the Wwise output node](Docs/wwisemrq-configure-output.png)
+
+## How it works
+
+MRQ ticks the render one frame at a time, and the plugin's output node rides along: on each frame it tells Wwise's sound engine to render exactly that frame's worth of audio in offline mode, captures the returned buffer, and appends it as 24-bit PCM. When the render finishes, the accumulated buffer is written out as a single WAV file, keeping the audio locked to the same frame clock as the video.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
