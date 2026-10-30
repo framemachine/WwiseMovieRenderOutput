@@ -4,10 +4,10 @@
 
 
 #include "CoreMinimal.h"
-#include <AK/SoundEngine/Common/AkTypedefs.h>
-#include <AK/SoundEngine/Common/AkCommonDefs.h>
 #include "HAL/ThreadSafeCounter.h"
 #include "MoviePipelineOutputBase.h"
+#include <AK/SoundEngine/Common/AkTypes.h>
+#include <AK/SoundEngine/Common/AkCommonDefs.h>
 #include "WwiseMoviePipelineWaveOutput.generated.h"
 
 /**
@@ -31,7 +31,7 @@ private:
 	static void CaptureCallback(AkAudioBuffer& in_CaptureBuffer, AkOutputDeviceID in_idOutput, void* in_pCookie);
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Wwise")
 	FName OverrideOutputFileName;
 	
 private:
