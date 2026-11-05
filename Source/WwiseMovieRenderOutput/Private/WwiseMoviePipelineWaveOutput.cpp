@@ -130,19 +130,11 @@ void UWwiseMoviePipelineWaveOutput::OnReceiveImageDataImpl(FMoviePipelineMergerO
 		return;
 	}
 
-	// Tell Wwise to render this frame of audio, which results in `CaptureCallback` getting called back
-	// with the rendered audio buffer for converting to 24-bit PCM and saving until the end when we'll generate
-	// the output wav file.
-	
+	// Ensure that the sound engine frame time has advanced correctly
 	IWwiseSoundEngineAPI* const SoundEngine = IWwiseSoundEngineAPI::Get();
 	if (SoundEngine && SoundEngine->IsInitialized())
 	{
-		// specify frame time for this frame ...
-		const float DeltaTime = InMergedOutputFrame->FrameOutputState.TimeData.FrameDeltaTime;
-		SoundEngine->SetOfflineRenderingFrameTime(DeltaTime);
-
-		// ... and tell wwise to render the frame
-		SoundEngine->RenderAudio();
+		SoundEngine->SetOfflineRenderingFrameTime(FApp::GetFixedDeltaTime());
 	}
 }
 
